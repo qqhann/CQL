@@ -16,11 +16,12 @@ If you find this repository useful for your research, please cite:
 ```
 
 ## Atari Experiments
-Our code is built on top of the [batch_rl](https://github.com/google-research/batch_rl) repository. Please run installation instructions from the batch_rl repository. CQL in this case was implemented on top of QR-DQN for which the implementation is present in `batch_rl/multi_head/quantile_agent.py`. 
+
+Our code is built on top of the [batch_rl](https://github.com/google-research/batch_rl) repository. Please run installation instructions from the batch_rl repository. CQL in this case was implemented on top of QR-DQN for which the implementation is present in `batch_rl/multi_head/quantile_agent.py`.
 
 To run experiments in the paper, you will have to specify the size of an individual replay buffer for the purpose of being able to use 1% and 10% data. This is specified in line 53 in `batch_rl/fixed_replay/replay_memory/fixed_replay_memory.py`. For 1%, set `args[2]=1000` and for 10% set `args[2] = 10000`. Depending upon the availability of RAM, you may be able to raise the value of `num_buffers` from 10 to 50 (we were able to do this for 1% datasets) and then change this value in: `self._load_replay_buffers(num_buffers=<>)`.
 
-Now, to run CQL, use the follwing command:
+Now, to run CQL, use the following command:
 
 ```
 python -um batch_rl.fixed_replay.train \
@@ -32,20 +33,23 @@ python -um batch_rl.fixed_replay.train \
   --gin_bindings='atari_lib.create_atari_environment.game_name = "Pong"'
   --gin_bindings='FixedReplayQuantileAgent.minq_weight=1.0'
 ```
-For 1% data, use `minq_weight=4.0` and for 10% data, use `minq_weight=1.0`. 
+
+For 1% data, use `minq_weight=4.0` and for 10% data, use `minq_weight=1.0`.
 
 ## D4RL Experiments
+
 Our code is built off of [rlkit](https://github.com/vitchyr/rlkit). Please install the conda environment for rlkit while making sure to install `torch>=1.1.0`. Please install [d4rl](https://github.com/rail-berkeley/d4rl). Code for the CQL algorithm is present in `rlkit/torch/sac/cql.py`. After this, for running CQL on the MuJoCo environments, run:
 
 ```
 python examples/cql_mujoco_new.py --env=<d4rl-mujoco-env-with-version e.g. hopper-medium-v0>
-        --policy_lr=1e-4 --seed=10 --lagrange_thresh=-1.0 
+        --policy_lr=1e-4 --seed=10 --lagrange_thresh=-1.0
         --min_q_weight=(5.0 or 10.0) --gpu=<gpu-id> --min_q_version=3
 ```
 
-In terms of parameters, we have found `min_q_weight=5.0` or `min_q_weight=10.0` along with `policy_lr=1e-4` or `policy_lr=3e-4` to work reasonably fine for the Gym MuJoCo tasks. These parameters are slightly different from the paper (which will be updated soon) due to differences in the D4RL datasets. For sample performance numbers (final numbers to be updated soon), hopper-medium acheives ~3000 return, and hopper-medium-exprt obtains ~1300 return at the end of 500k gradient steps. To run `CQL(\rho)` [i.e. without the importance sampling], set `min_q_version=2`.
+In terms of parameters, we have found `min_q_weight=5.0` or `min_q_weight=10.0` along with `policy_lr=1e-4` or `policy_lr=3e-4` to work reasonably fine for the Gym MuJoCo tasks. These parameters are slightly different from the paper (which will be updated soon) due to differences in the D4RL datasets. For sample performance numbers (final numbers to be updated soon), hopper-medium achieves ~3000 return, and hopper-medium-exprt obtains ~1300 return at the end of 500k gradient steps. To run `CQL(\rho)` [i.e. without the importance sampling], set `min_q_version=2`.
 
 For Ant-Maze tasks, please run:
+
 ```
 python examples/cql_antmaze_new.py --env=antmaze-medium-play-v0 --policy_lr=1e-4 --seed=10
         --lagrange_thresh=5.0 --min_q_wight=5.0 --gpu=<gpu-id> --min_q_version=3

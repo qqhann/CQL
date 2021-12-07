@@ -9,6 +9,7 @@ python = "^3.8"
 torch = "^1.10.0"
 absl-py = "^1.0.0"
 dopamine-rl = "^4.0.1"
+gin-config = "^0.5.0"
 
 [tool.poetry.dev-dependencies]
 

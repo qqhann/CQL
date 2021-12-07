@@ -5,11 +5,13 @@ description = ""
 authors = ["Your Name <you@example.com>"]
 
 [tool.poetry.dependencies]
-python = "^3.8"
+python = "^3.8,<3.10"
 torch = "^1.10.0"
 absl-py = "^1.0.0"
 dopamine-rl = "^4.0.1"
 gin-config = "^0.5.0"
+tensorflow = "^2.7.0"
+gym = {extras = ["accept-rom-license"], version = "^0.21.0"}
 
 [tool.poetry.dev-dependencies]
 
